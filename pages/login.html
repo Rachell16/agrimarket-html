@@ -15,11 +15,7 @@
       <a href="../index.html" style="color:rgba(255,255,255,.6);font-size:13px;display:inline-flex;align-items:center;gap:5px;margin-bottom:36px">← Kembali ke Beranda</a>
       <h2 style="font-family:var(--font-head);font-size:34px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.2">Selamat Datang<br>di AgriMarket 🌱</h2>
       <p style="font-size:15px;color:rgba(255,255,255,.65);margin-bottom:36px;line-height:1.7">Platform e-commerce yang menghubungkan petani langsung dengan konsumen.</p>
-      <div style="display:flex;flex-direction:column;gap:14px">
-        ${['Produk segar langsung dari petani terverifikasi','Pengiriman pagi sebelum jam 09.00 WIB','Harga lebih adil tanpa perantara','Transaksi aman & terenkripsi'].map(f=>`
-        <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.75)">
-          <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px">✓</div>${f}
-        </div>`).join('')}
+      <div id="features-list" style="display:flex;flex-direction:column;gap:14px"></div>
       </div>
     </div>
   </div>
@@ -70,6 +66,31 @@
       showToast('Email atau password salah! (gunakan akun demo)');
     }
   }
+</script>
+  <script>
+  const features = [
+    'Produk segar langsung dari petani terverifikasi',
+    'Pengiriman pagi sebelum jam 09.00 WIB',
+    'Harga lebih adil tanpa perantara',
+    'Transaksi aman & terenkripsi'
+  ];
+
+  document.getElementById('features-list').innerHTML = features.map(f => `
+    <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.75)">
+      <div style="
+        width:28px;
+        height:28px;
+        border-radius:50%;
+        background:rgba(255,255,255,.15);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-shrink:0;
+        font-size:12px;
+      ">✓</div>
+      ${f}
+    </div>
+  `).join('');
 </script>
 </body>
 </html>
