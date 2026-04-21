@@ -8,19 +8,7 @@
 </head>
 <body>
 <div id="navbar"></div>
-<div style="display:flex;flex-direction:column;gap:14px"> 
-  ${[
-    'Produk segar langsung dari petani terverifikasi',
-    'Pengiriman pagi sebelum jam 09.00 WIB',
-    'Harga lebih adil tanpa perantara',
-    'Transaksi aman & terenkripsi'
-  ].map(f => `
-    <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.75)">
-      <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px">✓</div>
-      ${f}
-    </div>
-  `).join('')}
-</div>
+<div id="features-list" style="display:flex;flex-direction:column;gap:14px"></div>
   <div class="auth-left">
     <div class="auth-left-bg">🌱</div>
     <div style="position:relative;z-index:1">
@@ -78,6 +66,21 @@
       showToast('Email atau password salah! (gunakan akun demo)');
     }
   }
+</script>
+  <script>
+  const features = [
+    'Produk segar langsung dari petani terverifikasi',
+    'Pengiriman pagi sebelum jam 09.00 WIB',
+    'Harga lebih adil tanpa perantara',
+    'Transaksi aman & terenkripsi'
+  ];
+
+  document.getElementById('features-list').innerHTML = features.map(f => `
+    <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.75)">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px">✓</div>
+      ${f}
+    </div>
+  `).join('');
 </script>
 </body>
 </html>
