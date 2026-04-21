@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Petani — AgriMarket</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<div id="content"></div>
+<div id="footer"></div>
+<script src="../js/app.js"></script>
+<script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+  const id = parseInt(new URLSearchParams(window.location.search).get('id'));
+  const p  = DATA.petanis.find(pt => pt.id === id);
+
+  if (!p) {
+    document.getElementById('content').innerHTML = `<div class="container"><div class="empty-state mt-24"><div class="icon">😔</div><p>Petani tidak ditemukan.</p><a href="petani.html" class="btn btn-green mt-12">Kembali</a></div></div>`;
+  } else {
+    document.title = `${p.toko} — AgriMarket`;
+    const produkPetani = DATA.produk.filter(pr => pr.petani_id === p.id);
+    const totalTerjual = produkPetani.reduce((s,pr) => s + pr.terjual, 0);
+
+    document.getElementById('content').innerHTML = `
+    <!-- Header toko -->
+    <div style="background:linear-gradient(135deg,var(--g900),var(--g700));padding:52px 0;color:#fff">
+      <div class="container">
+        <div style="display:flex;align-items:center;gap:28px">
+          <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.18);border:3px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;flex-shrink:0">${p.nama.charAt(0)}</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+              <h1 style="font-family:var(--font-head);font-size:28px;font-weight:700">${p.toko}</h1>
+              <span style="background:rgba(255,255,255,.18);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700">✓ Terverifikasi</span>
+            </div>
+            <div style="font-size:14px;opacity:.8;margin-bottom:8px">👤 ${p.nama}</div>
+            <div style="display:flex;gap:20px;font-size:13px;opacity:.8;flex-wrap:wrap">
+              <span>📍 ${p.lokasi}</span>
+              <span>📅 Bergabung ${p.bergabung}</span>
+              <span>⭐ ${p.rating.toFixed(1)} / 5.0</span>
+              <span>💬 ${p.ulasan} ulasan</span>
+            </div>
+          </div>
+        </div>
+        ${p.deskripsi ? `<div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);font-size:14px;opacity:.8;line-height:1.7;max-width:640px">${p.deskripsi}</div>` : ''}
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div style="background:var(--white);border-bottom:1.5px solid var(--border)">
+      <div class="container">
+        <div style="display:flex;gap:36px;padding:20px 0;flex-wrap:wrap">
+          ${[['⭐',p.rating.toFixed(1)+' / 5.0','Rating'],['💬',p.ulasan,'Ulasan'],['🌿',produkPetani.length,'Produk Aktif'],['📦',totalTerjual,'Total Terjual']].map(([ic,val,lbl])=>`
+          <div style="text-align:center;min-width:100px">
+            <div style="font-size:22px;margin-bottom:4px">${ic}</div>
+            <div style="font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--g700)">${val}</div>
+            <div style="font-size:11px;color:var(--muted)">${lbl}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Produk -->
+    <div class="container">
+      <div style="padding:40px 0">
+        <div class="sec-head-row mb-24">
+          <h2 style="font-family:var(--font-head);font-size:22px;font-weight:700">🌿 Produk dari ${p.toko}</h2>
+          <span class="text-muted text-sm">${produkPetani.length} produk</span>
+        </div>
+        ${produkPetani.length === 0
+          ? `<div class="empty-state"><div class="icon">🌱</div><p>Belum ada produk aktif.</p></div>`
+          : `<div class="prod-grid">${produkPetani.map(produkCard).join('')}</div>`
+        }
+      </div>
+    </div>`;
+  }
+</script>
+</body>
+</html>

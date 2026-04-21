@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Dashboard Petani — AgriMarket</title><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<div id="navbar"></div>
+<div class="dash-wrap">
+  <div class="sidebar">
+    <div class="sb-profile">
+      <div class="sb-av">BS</div>
+      <div class="sb-name">Pak Budi Santoso</div>
+      <div class="sb-role">Petani Mitra <span class="badge badge-green" style="font-size:9px">✓</span></div>
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard-petani.html" class="sb-item active">📊 Dashboard</a>
+      <a href="#produk"               class="sb-item">🌿 Produk Saya</a>
+      <a href="#pesanan"              class="sb-item">📦 Pesanan</a>
+      <a href="profil-petani.html?id=1" class="sb-item">👤 Lihat Profil Publik</a>
+      <a href="login.html"            class="sb-item" style="color:var(--red)">🚪 Keluar</a>
+    </nav>
+  </div>
+  <div class="dash-main">
+    <h1 style="font-family:var(--font-head);font-size:22px;font-weight:700;margin-bottom:4px">Selamat datang, Pak Budi 👨‍🌾</h1>
+    <p class="text-muted text-sm mb-24" id="tgl"></p>
+
+    <div style="background:var(--g50);border:1px solid var(--g100);border-radius:10px;padding:12px 16px;margin-bottom:24px;font-size:13px;color:var(--g700);font-weight:500">
+      🔔 Ada <strong>3</strong> pesanan baru yang menunggu konfirmasimu!
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Pendapatan Hari Ini</div><div class="stat-val">Rp 245.000</div><div class="stat-sub stat-up">↑ 12% vs kemarin</div></div>
+      <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label">Pesanan Hari Ini</div><div class="stat-val">8</div><div class="stat-sub">3 belum dikonfirmasi</div></div>
+      <div class="stat-card"><div class="stat-icon">🌿</div><div class="stat-label">Produk Aktif</div><div class="stat-val">4</div><div class="stat-sub stat-warn">⚠ 1 stok menipis</div></div>
+      <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-label">Rating Toko</div><div class="stat-val">4.8</div><div class="stat-sub stat-up">dari 120 ulasan</div></div>
+    </div>
+
+    <div class="flex-between mb-16" id="pesanan">
+      <h2 style="font-size:16px;font-weight:700">Pesanan Masuk — Perlu Konfirmasi</h2>
+      <button class="btn btn-green btn-sm" onclick="showToast('Fitur tambah produk tersedia di versi PHP!')">+ Tambah Produk</button>
+    </div>
+    <div class="card" style="overflow:hidden;margin-bottom:32px">
+      <table class="tbl">
+        <thead><tr><th>Kode Pesanan</th><th>Konsumen</th><th>Total</th><th>Pengiriman</th><th>Aksi</th></tr></thead>
+        <tbody>
+          ${[['#AGR-20260421-001','Sari Dewi R.','Rp 34.000','🌅 Pagi'],['#AGR-20260421-002','Budi S.','Rp 22.000','🌅 Pagi'],['#AGR-20260421-003','Dewi L.','Rp 17.500','☀️ Siang']].map(([kode,nama,total,kirim])=>`
+          <tr>
+            <td><strong style="color:var(--g700)">${kode}</strong></td>
+            <td>${nama}</td>
+            <td style="font-weight:700;color:var(--g700)">${total}</td>
+            <td>${kirim}</td>
+            <td><button class="btn btn-green btn-sm" onclick="showToast('Pesanan ${kode} dikonfirmasi! ✅')">✓ Konfirmasi</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:16px" id="produk">Produk Saya</h2>
+    <div class="prod-grid" id="produk-grid"></div>
+  </div>
+</div>
+<div id="footer"></div>
+<script src="../js/app.js"></script><script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+  document.getElementById('tgl').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const myProduk = DATA.produk.filter(p => p.petani_id === 1);
+  document.getElementById('produk-grid').innerHTML = myProduk.map(produkCard).join('');
+</script>
+</body></html>

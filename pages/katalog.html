@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katalog Produk — AgriMarket</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+
+<div class="container">
+  <div style="padding:32px 0">
+    <!-- Top bar -->
+    <div class="flex-between mb-24" style="flex-wrap:wrap;gap:16px">
+      <div>
+        <h1 id="page-title" style="font-family:var(--font-head);font-size:28px;font-weight:700;margin-bottom:4px">Semua Produk</h1>
+        <p class="text-muted text-sm" id="result-count">Menampilkan semua produk</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <label class="text-muted text-sm">Urutkan:</label>
+        <select id="sort-sel" class="form-input form-select" style="width:auto" onchange="applyFilter()">
+          <option value="populer">Terpopuler</option>
+          <option value="terbaru">Terbaru</option>
+          <option value="harga_asc">Harga: Rendah → Tinggi</option>
+          <option value="harga_desc">Harga: Tinggi → Rendah</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Kategori -->
+    <div class="cat-strip mb-24" id="cat-strip"></div>
+
+    <!-- Grid -->
+    <div class="prod-grid" id="prod-grid"></div>
+  </div>
+</div>
+
+<div id="footer"></div>
+<script src="../js/app.js"></script>
+<script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+
+  function applyFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const q    = params.get('q') || '';
+    const kat  = params.get('kat') || '';
+    const sort = document.getElementById('sort-sel').value;
+
+    const hasil = filterProduk(q, kat, sort);
+
+    // Update title
+    let title = 'Semua Produk';
+    if (q)   title = `Hasil pencarian: "${q}"`;
+    else if (kat) {
+      const k = DATA.kategoris.find(k => k.slug === kat);
+      if (k) title = k.icon + ' ' + k.nama;
+    }
+    document.getElementById('page-title').textContent = title;
+    document.getElementById('result-count').textContent = `${hasil.length} produk ditemukan`;
+
+    // Render produk
+    const grid = document.getElementById('prod-grid');
+    if (hasil.length === 0) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔍</div><p style="margin-bottom:16px">Produk tidak ditemukan.</p><a href="katalog.html" class="btn btn-outline">Lihat Semua</a></div>`;
+    } else {
+      grid.innerHTML = hasil.map(p => produkCard(p)).join('');
+    }
+
+    // Render kategori chips
+    const katSlug = kat;
+    document.getElementById('cat-strip').innerHTML =
+      `<a href="katalog.html" class="cat-chip ${!katSlug?'active':''}">🌿 Semua</a>` +
+      DATA.kategoris.map(k => `<a href="katalog.html?kat=${k.slug}" class="cat-chip ${katSlug===k.slug?'active':''}">${k.icon} ${k.nama}</a>`).join('');
+  }
+
+  applyFilter();
+</script>
+</body>
+</html>

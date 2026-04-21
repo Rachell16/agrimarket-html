@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Dashboard Admin — AgriMarket</title><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+<div id="navbar"></div>
+<div class="dash-wrap">
+  <div class="sidebar admin-sb">
+    <div class="asb-logo">🛡️ Admin Panel</div>
+    <a href="dashboard-admin.html" class="asb-item active">📊 Dashboard</a>
+    <a href="#pengguna"            class="asb-item">👥 Pengguna</a>
+    <a href="#verifikasi"          class="asb-item">✅ Verifikasi Petani</a>
+    <a href="#transaksi"           class="asb-item">💳 Transaksi</a>
+    <a href="login.html"           class="asb-item" style="color:rgba(255,100,100,.8)">🚪 Keluar</a>
+  </div>
+  <div class="dash-main">
+    <h1 style="font-family:var(--font-head);font-size:22px;font-weight:700;margin-bottom:4px">Dashboard Admin 🛡️</h1>
+    <p class="text-muted text-sm mb-24" id="tgl"></p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Konsumen</div><div class="stat-val">2.847</div><div class="stat-sub stat-up">↑ +38 minggu ini</div></div>
+      <div class="stat-card"><div class="stat-icon">👨‍🌾</div><div class="stat-label">Petani Aktif</div><div class="stat-val">3 <span class="badge badge-amber" style="font-size:10px">1 pending</span></div></div>
+      <div class="stat-card"><div class="stat-icon">💳</div><div class="stat-label">Transaksi Hari Ini</div><div class="stat-val">148</div><div class="stat-sub stat-warn">↓ −3% vs kemarin</div></div>
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Total Pendapatan</div><div class="stat-val" style="font-size:18px">Rp 4,2jt</div><div class="stat-sub stat-up">↑ bulan ini</div></div>
+    </div>
+
+    <!-- Verifikasi -->
+    <div class="flex-between mb-16" id="verifikasi">
+      <h2 style="font-size:16px;font-weight:700">🔍 Verifikasi Petani Baru</h2>
+      <span class="badge badge-amber">1 menunggu</span>
+    </div>
+    <div class="card mb-24" style="overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Petani</th><th>Nama Toko</th><th>Lokasi</th><th>Tgl Daftar</th><th>Aksi</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Pak Hendra R.</strong><br><span class="text-muted text-sm">hendra@petani.id</span></td>
+            <td>Kebun Hendra</td>
+            <td>Boyolali, Jawa Tengah</td>
+            <td>21 Apr 2026</td>
+            <td style="display:flex;gap:8px">
+              <button class="btn btn-green btn-sm" onclick="showToast('Petani Hendra diverifikasi! ✅')">✓ Setujui</button>
+              <button class="btn btn-sm" style="background:#FFEBEE;color:var(--red);border:none" onclick="showToast('Akun ditolak.')">✗ Tolak</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Transaksi -->
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:16px" id="transaksi">📋 Transaksi Terbaru</h2>
+    <div class="card" style="overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Kode</th><th>Konsumen</th><th>Total</th><th>Status</th><th>Ubah</th></tr></thead>
+        <tbody>
+          ${[['#AGR-20260421-001','Sari Dewi','Rp 34.000','selesai'],['#AGR-20260421-002','Budi S.','Rp 22.000','dikirim'],['#AGR-20260421-003','Dewi L.','Rp 17.500','diproses'],['#AGR-20260420-018','Ahmad F.','Rp 8.000','selesai'],['#AGR-20260420-017','Rina M.','Rp 18.000','selesai']].map(([kode,nama,total,status])=>`
+          <tr>
+            <td style="font-size:12px;font-weight:700;color:var(--g700)">${kode}</td>
+            <td>${nama}</td>
+            <td style="font-weight:700;color:var(--g700)">${total}</td>
+            <td><span class="badge ${status==='selesai'?'badge-green':status==='dikirim'?'badge-navy':'badge-amber'}">${status}</span></td>
+            <td>
+              <select class="form-input form-select" style="width:auto;padding:4px 8px;font-size:12px" onchange="showToast('Status diperbarui!')">
+                <option ${status==='menunggu'?'selected':''}>menunggu</option>
+                <option ${status==='dikonfirmasi'?'selected':''}>dikonfirmasi</option>
+                <option ${status==='dikirim'?'selected':''}>dikirim</option>
+                <option ${status==='selesai'?'selected':''}>selesai</option>
+              </select>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="footer"></div>
+<script src="../js/app.js"></script><script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+  document.getElementById('tgl').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+</script>
+</body></html>

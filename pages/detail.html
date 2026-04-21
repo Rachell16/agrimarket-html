@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detail Produk — AgriMarket</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+
+<div class="container">
+  <div id="breadcrumb" class="breadcrumb"></div>
+  <div id="content"></div>
+</div>
+
+<div id="footer"></div>
+<script src="../js/app.js"></script>
+<script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+
+  const id = parseInt(new URLSearchParams(window.location.search).get('id'));
+  const p  = DATA.produk.find(p => p.id === id);
+
+  if (!p) {
+    document.getElementById('content').innerHTML = `<div class="empty-state"><div class="icon">😔</div><p>Produk tidak ditemukan.</p><a href="katalog.html" class="btn btn-green mt-12">Kembali ke Katalog</a></div>`;
+  } else {
+    const petani  = DATA.petanis.find(pt => pt.id === p.petani_id);
+    const kategori= DATA.kategoris.find(k => k.id === p.kat_id);
+    const reviews = DATA.ulasan.filter(u => u.produk_id === p.id);
+
+    document.title = `${p.nama} — AgriMarket`;
+    document.getElementById('breadcrumb').innerHTML =
+      `<a href="../index.html">Beranda</a><span class="sep">/</span>
+       <a href="katalog.html">Katalog</a><span class="sep">/</span>
+       <span style="color:var(--txt)">${p.nama}</span>`;
+
+    document.getElementById('content').innerHTML = `
+    <div class="detail-layout" style="padding:32px 0 48px">
+      <!-- Galeri -->
+      <div class="d-gallery">
+        <div class="d-main" id="d-main">${p.icon}</div>
+        <div class="d-thumbs">
+          <div class="d-thumb active" onclick="document.getElementById('d-main').textContent='${p.icon}'">${p.icon}</div>
+          <div class="d-thumb" style="background:#FFF8E1" onclick="">📦</div>
+          <div class="d-thumb" style="background:#E3F2FD" onclick="">🚚</div>
+        </div>
+        ${p.organik ? `<div style="background:var(--g50);border:1px solid var(--g100);border-radius:12px;padding:14px;margin-top:4px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="tag">🌿 Organik</span><span class="tag">📅 Dipanen hari ini</span><span class="tag">🚚 Kirim besok pagi</span>
+        </div>` : ''}
+      </div>
+
+      <!-- Info -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <span class="tag">${kategori ? kategori.icon+' '+kategori.nama : ''}</span>
+          ${p.organik ? '<span class="badge badge-green">🌿 Organik</span>' : ''}
+        </div>
+        <h1 style="font-family:var(--font-head);font-size:30px;font-weight:700;margin-bottom:8px;line-height:1.2">${p.nama}</h1>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+          <span style="color:var(--amber);font-size:14px">${bintang(p.rating)} ${p.rating.toFixed(1)}</span>
+          <span class="text-muted text-sm">${p.terjual} terjual</span>
+          ${p.stok <= 5 ? '<span class="badge badge-red">⚠ Stok menipis!</span>' : ''}
+        </div>
+        <div style="font-family:var(--font-head);font-size:34px;font-weight:700;color:var(--g700);margin-bottom:20px">
+          ${rupiah(p.harga)} <span style="font-family:var(--font-body);font-size:15px;font-weight:400;color:var(--muted)">/ ${p.satuan}</span>
+        </div>
+        <hr class="divider">
+        <p class="text-muted" style="font-size:14px;line-height:1.8;margin-bottom:20px">${p.desk}</p>
+        <div class="text-muted text-sm mb-20">📦 Stok tersedia: <strong style="color:var(--txt)">${p.stok} ${p.satuan}</strong></div>
+
+        <!-- Petani -->
+        <div style="background:var(--surf);border-radius:12px;border:1.5px solid var(--border);padding:16px;display:flex;align-items:center;gap:16px;margin-bottom:24px">
+          <a href="profil-petani.html?id=${petani ? petani.id : 1}">
+            <div style="width:48px;height:48px;border-radius:50%;background:var(--g50);color:var(--g700);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--g100);flex-shrink:0">
+              ${petani ? petani.nama.charAt(0) : 'P'}
+            </div>
+          </a>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700;margin-bottom:3px">
+              ${petani ? petani.toko : '-'}
+              <span class="badge badge-green" style="font-size:10px;margin-left:6px">✓ Terverifikasi</span>
+            </div>
+            <div class="text-muted text-sm">📍 ${petani ? petani.lokasi : '-'} · ★ ${petani ? petani.rating.toFixed(1) : '-'}</div>
+          </div>
+          <a href="profil-petani.html?id=${petani ? petani.id : 1}" class="btn btn-outline btn-sm">Lihat Toko</a>
+        </div>
+
+        <!-- Qty + CTA -->
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+          <span class="text-muted text-sm font-bold">Jumlah:</span>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="adjQty(-1)">−</button>
+            <span class="qty-val" id="qty-val">1</span>
+            <button class="qty-btn" onclick="adjQty(1)">+</button>
+          </div>
+          <span class="text-muted text-sm">Stok: ${p.stok}</span>
+        </div>
+        <div style="display:flex;gap:14px">
+          <button onclick="doAddCart()" class="btn btn-outline btn-lg" style="flex:1">🛒 Tambah Keranjang</button>
+          <a href="keranjang.html" onclick="doAddCart()" class="btn btn-green btn-lg" style="flex:1;justify-content:center">⚡ Beli Sekarang</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ulasan -->
+    <div style="padding:32px 0;border-top:1.5px solid var(--border)">
+      <h2 style="font-family:var(--font-head);font-size:24px;font-weight:700;margin-bottom:20px">Ulasan Pembeli (${reviews.length})</h2>
+      ${reviews.length === 0
+        ? '<p class="text-muted">Belum ada ulasan untuk produk ini.</p>'
+        : `<div class="grid-2">${reviews.map(r => `
+            <div class="card card-pad">
+              <div class="flex-between mb-8">
+                <strong>${r.user}</strong>
+                <span style="color:var(--amber)">${bintang(r.rating)}</span>
+              </div>
+              <p class="text-muted" style="font-size:13px;line-height:1.6">${r.komentar}</p>
+            </div>`).join('')}</div>`
+      }
+    </div>`;
+
+    // Produk serupa
+    const serupa = DATA.produk.filter(x => x.kat_id === p.kat_id && x.id !== p.id).slice(0, 4);
+    if (serupa.length) {
+      document.getElementById('content').innerHTML += `
+        <div style="padding-bottom:56px">
+          <h2 style="font-family:var(--font-head);font-size:22px;font-weight:700;margin-bottom:20px">Produk Serupa</h2>
+          <div class="prod-grid">${serupa.map(produkCard).join('')}</div>
+        </div>`;
+    }
+  }
+
+  let qty = 1;
+  function adjQty(d) {
+    const maxStok = p ? p.stok : 99;
+    qty = Math.max(1, Math.min(maxStok, qty + d));
+    document.getElementById('qty-val').textContent = qty;
+  }
+  function doAddCart() { if (p) addToCart(p.id, qty); }
+</script>
+</body>
+</html>

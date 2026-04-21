@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petani Mitra — AgriMarket</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>👨‍🌾 Petani Mitra Kami</h1>
+    <p>Mereka adalah pahlawan di balik setiap produk segar yang kamu terima</p>
+  </div>
+</div>
+
+<div class="container">
+  <div style="padding:48px 0">
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:48px">
+      <div class="card card-pad" style="text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">👨‍🌾</div>
+        <div style="font-family:var(--font-head);font-size:28px;font-weight:700;color:var(--g700)">3</div>
+        <div class="text-muted text-sm mt-4">Petani Terverifikasi</div>
+      </div>
+      <div class="card card-pad" style="text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">🌿</div>
+        <div style="font-family:var(--font-head);font-size:28px;font-weight:700;color:var(--g700)">8</div>
+        <div class="text-muted text-sm mt-4">Produk Aktif</div>
+      </div>
+      <div class="card card-pad" style="text-align:center">
+        <div style="font-size:36px;margin-bottom:8px">⭐</div>
+        <div style="font-family:var(--font-head);font-size:28px;font-weight:700;color:var(--g700)">4.8</div>
+        <div class="text-muted text-sm mt-4">Rating Rata-rata</div>
+      </div>
+    </div>
+
+    <h2 style="font-family:var(--font-head);font-size:26px;font-weight:700;margin-bottom:24px">Semua Petani Mitra</h2>
+    <div class="farmer-grid" id="farmer-grid"></div>
+  </div>
+</div>
+
+<div id="footer"></div>
+<script src="../js/app.js"></script>
+<script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+  document.getElementById('farmer-grid').innerHTML = DATA.petanis.map(p => `
+    <a href="profil-petani.html?id=${p.id}" class="farmer-card" style="cursor:pointer">
+      <div class="farmer-av">${p.nama.charAt(0)}</div>
+      <div>
+        <div class="farmer-name">${p.nama}</div>
+        <div class="farmer-toko">🏪 ${p.toko}</div>
+        <div class="farmer-loc">📍 ${p.lokasi}</div>
+        <div class="farmer-meta">
+          <span>⭐ <strong>${p.rating.toFixed(1)}</strong></span>
+          <span>${p.ulasan} ulasan</span>
+          <span>${p.produk} produk</span>
+          <span>Sejak ${p.bergabung}</span>
+        </div>
+        <div style="margin-top:10px"><span class="badge badge-green">✓ Terverifikasi</span></div>
+      </div>
+    </a>`).join('');
+</script>
+</body>
+</html>

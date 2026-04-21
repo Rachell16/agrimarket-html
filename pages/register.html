@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar — AgriMarket</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<div class="auth-wrap">
+  <div class="auth-left">
+    <div class="auth-left-bg">🌾</div>
+    <div style="position:relative;z-index:1">
+      <a href="../index.html" style="color:rgba(255,255,255,.6);font-size:13px;display:inline-flex;gap:5px;margin-bottom:36px">← Kembali</a>
+      <h2 style="font-family:var(--font-head);font-size:32px;font-weight:700;color:#fff;margin-bottom:10px">Bergabung dengan AgriMarket 🌱</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,.65);line-height:1.7">Daftar sebagai konsumen untuk berbelanja, atau sebagai petani mitra untuk menjual hasil panen.</p>
+    </div>
+  </div>
+  <div class="auth-right" style="overflow-y:auto">
+    <div class="auth-card" style="margin:24px 0">
+      <div class="auth-logo">
+        <div class="auth-ring">🌱</div>
+        <div style="font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--g900)">Buat Akun Baru</div>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="setRole('konsumen')">👤 Konsumen</button>
+        <button class="auth-tab" onclick="setRole('petani')">👨‍🌾 Petani</button>
+      </div>
+      <form onsubmit="doRegister(event)">
+        <input type="hidden" id="role-val" value="konsumen">
+        <div class="form-group"><label class="form-label">Nama Lengkap</label><input class="form-input" id="nama" type="text" required></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="email" type="email" required></div>
+        <div class="form-group"><label class="form-label">No. Telepon</label><input class="form-input" id="telp" type="text"></div>
+        <div class="form-group"><label class="form-label">Alamat</label><input class="form-input" id="alamat" type="text"></div>
+        <div id="petani-fields" style="display:none">
+          <div class="form-group"><label class="form-label">Nama Toko / Kebun</label><input class="form-input" id="nama-toko" type="text"></div>
+          <div class="form-group"><label class="form-label">Lokasi Kebun</label><input class="form-input" id="lokasi" type="text" placeholder="cth: Magelang, Jawa Tengah"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="pass" type="password" required></div>
+        <div class="form-group"><label class="form-label">Konfirmasi Password</label><input class="form-input" id="konfirm" type="password" required></div>
+        <button type="submit" class="btn btn-green w-full btn-lg">Buat Akun</button>
+      </form>
+      <div class="text-center mt-16 text-sm text-muted">Sudah punya akun? <a href="login.html" style="color:var(--g700);font-weight:700">Masuk</a></div>
+    </div>
+  </div>
+</div>
+<div id="footer"></div>
+<script src="../js/app.js"></script>
+<script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+  // auto-set role from URL
+  const urlRole = new URLSearchParams(window.location.search).get('role');
+  if (urlRole === 'petani') setRole('petani');
+
+  function setRole(r) {
+    document.getElementById('role-val').value = r;
+    document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (r==='konsumen'&&i===0)||(r==='petani'&&i===1)));
+    document.getElementById('petani-fields').style.display = r==='petani' ? 'block' : 'none';
+  }
+  function doRegister(e) {
+    e.preventDefault();
+    const pass = document.getElementById('pass').value;
+    const konfirm = document.getElementById('konfirm').value;
+    if (pass !== konfirm) { showToast('Password tidak cocok!'); return; }
+    showToast('Akun berhasil dibuat! 🎉');
+    setTimeout(() => window.location.href = 'login.html', 1500);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tentang Kami — AgriMarket</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+
+<!-- Hero -->
+<div style="background:var(--g900);padding:72px 0;text-align:center;color:#fff;position:relative;overflow:hidden">
+  <div style="position:absolute;left:4%;top:50%;transform:translateY(-50%);font-size:180px;opacity:.05">🌾</div>
+  <div style="position:absolute;right:4%;top:50%;transform:translateY(-50%);font-size:180px;opacity:.05">🥦</div>
+  <div style="position:relative;z-index:1">
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:.12em;opacity:.6;margin-bottom:10px;font-weight:600">Tentang Kami</div>
+    <h1 style="font-family:var(--font-head);font-size:48px;font-weight:700;margin-bottom:14px">AgriMarket</h1>
+    <p style="font-size:17px;opacity:.75;max-width:520px;margin:0 auto;line-height:1.7">Platform e-commerce yang menghubungkan petani lokal langsung dengan konsumen — tanpa perantara, lebih segar, lebih adil.</p>
+  </div>
+</div>
+
+<!-- Stats -->
+<div style="background:var(--white);border-bottom:1.5px solid var(--border)">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);text-align:center;padding:36px 0">
+      ${[['🧑‍💼','2.800+','Konsumen Aktif'],['👨‍🌾','3','Petani Terverifikasi'],['🌿','8','Produk Segar'],['📦','580+','Pesanan Selesai']].map(([ic,val,lbl])=>`
+      <div style="padding:16px">
+        <div style="font-size:34px;margin-bottom:8px">${ic}</div>
+        <div style="font-family:var(--font-head);font-size:30px;font-weight:700;color:var(--g700)">${val}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:5px">${lbl}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Misi -->
+  <section class="section">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center">
+      <div>
+        <div class="sec-pre">Kenapa AgriMarket?</div>
+        <h2 style="font-family:var(--font-head);font-size:32px;font-weight:700;margin-bottom:18px;line-height:1.2">Memutus Rantai Perantara, Menyejahterakan <em style="color:var(--g700)">Petani</em></h2>
+        <p class="text-muted" style="font-size:15px;line-height:1.8;margin-bottom:16px">Selama ini petani menjual hasil panen ke tengkulak dengan harga rendah, sementara konsumen membeli di pasar dengan harga tinggi. AgriMarket hadir untuk memutus rantai ini.</p>
+        <p class="text-muted" style="font-size:15px;line-height:1.8">Petani mendapat harga yang lebih adil, dan konsumen mendapat produk yang lebih segar langsung dari sumbernya.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        ${[['🌱','Langsung dari Petani','Produk dikirim langsung dari kebun, tanpa perantara'],['⚡','Pengiriman Cepat','Pesan malam, tiba besok pagi sebelum jam 09.00'],['✅','Petani Terverifikasi','Semua petani mitra telah melalui verifikasi admin'],['🔒','Transaksi Aman','Pembayaran aman dengan berbagai metode terpercaya']].map(([ic,j,d])=>`
+        <div class="card card-pad" style="text-align:center">
+          <div style="font-size:32px;margin-bottom:10px">${ic}</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">${j}</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5">${d}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cara kerja -->
+  <section class="section section-alt" style="padding:56px 0;background:var(--surf);border-radius:20px;margin-bottom:56px">
+    <div style="text-align:center;margin-bottom:40px">
+      <div class="sec-pre">Cara Kerja</div>
+      <h2 style="font-family:var(--font-head);font-size:28px;font-weight:700">Mudah dalam 4 Langkah</h2>
+    </div>
+    <div class="steps-grid">
+      ${[['1','🔍','Cari Produk','Telusuri katalog produk segar dari petani lokal'],['2','🛒','Keranjang','Pilih produk yang kamu butuhkan'],['3','💳','Bayar','Checkout dengan metode favoritmu'],['4','📦','Terima','Produk segar tiba besok pagi!']].map(([n,ic,j,d])=>`
+      <div class="step">
+        <div class="step-num">${n}</div>
+        <div class="step-icon">${ic}</div>
+        <div class="step-title">${j}</div>
+        <div class="step-desc">${d}</div>
+      </div>`).join('')}
+    </div>
+  </section>
+
+  <!-- Petani mitra -->
+  <section style="padding-bottom:56px">
+    <div class="sec-head" style="text-align:center;max-width:500px;margin:0 auto 36px">
+      <div class="sec-pre">Petani Mitra</div>
+      <h2 style="font-family:var(--font-head);font-size:28px;font-weight:700">Pahlawan di Balik Setiap <em style="color:var(--g700)">Produk Segar</em></h2>
+    </div>
+    <div class="farmer-grid" id="farmer-list"></div>
+  </section>
+
+  <!-- CTA -->
+  <section style="padding-bottom:72px">
+    <div class="banner-join">
+      <div>
+        <h2>Siap bergabung? 🤝</h2>
+        <p>Daftar sekarang sebagai konsumen atau petani mitra AgriMarket — gratis!</p>
+        <div class="banner-join-btns">
+          <a href="register.html" class="btn btn-white btn-lg">Daftar Konsumen</a>
+          <a href="register.html?role=petani" class="btn btn-lg" style="background:transparent;border:1.5px solid rgba(255,255,255,.4);color:rgba(255,255,255,.85)">Daftar Petani</a>
+        </div>
+      </div>
+      <div class="banner-visual">🤝</div>
+    </div>
+  </section>
+
+</div>
+
+<div id="footer"></div>
+<script src="../js/app.js"></script>
+<script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+  document.getElementById('farmer-list').innerHTML = DATA.petanis.map(p => `
+    <a href="profil-petani.html?id=${p.id}" class="farmer-card">
+      <div class="farmer-av">${p.nama.charAt(0)}</div>
+      <div>
+        <div class="farmer-name">${p.nama}</div>
+        <div class="farmer-toko">🏪 ${p.toko}</div>
+        <div class="farmer-loc">📍 ${p.lokasi}</div>
+        <div class="farmer-meta"><span>⭐ <strong>${p.rating.toFixed(1)}</strong></span><span>${p.ulasan} ulasan</span><span>${p.produk} produk</span></div>
+        <div style="margin-top:8px"><span class="badge badge-green">✓ Terverifikasi</span></div>
+      </div>
+    </a>`).join('');
+</script>
+</body>
+</html>

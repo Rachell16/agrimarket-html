@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk — AgriMarket</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<div class="auth-wrap">
+  <div class="auth-left">
+    <div class="auth-left-bg">🌱</div>
+    <div style="position:relative;z-index:1">
+      <a href="../index.html" style="color:rgba(255,255,255,.6);font-size:13px;display:inline-flex;align-items:center;gap:5px;margin-bottom:36px">← Kembali ke Beranda</a>
+      <h2 style="font-family:var(--font-head);font-size:34px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.2">Selamat Datang<br>di AgriMarket 🌱</h2>
+      <p style="font-size:15px;color:rgba(255,255,255,.65);margin-bottom:36px;line-height:1.7">Platform e-commerce yang menghubungkan petani langsung dengan konsumen.</p>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        ${['Produk segar langsung dari petani terverifikasi','Pengiriman pagi sebelum jam 09.00 WIB','Harga lebih adil tanpa perantara','Transaksi aman & terenkripsi'].map(f=>`
+        <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.75)">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px">✓</div>${f}
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-ring">🌱</div>
+        <div style="font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--g900)">AgriMarket</div>
+        <div class="text-muted text-sm mt-4">Masuk ke akunmu</div>
+      </div>
+      <form onsubmit="doLogin(event)">
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="email" placeholder="nama@email.com" required></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" id="password" placeholder="••••••••" required></div>
+        <div style="text-align:right;margin-bottom:18px"><a href="#" class="text-sm" style="color:var(--g700);font-weight:600">Lupa password?</a></div>
+        <button type="submit" class="btn btn-green w-full btn-lg">Masuk</button>
+      </form>
+      <div class="text-center mt-16 text-sm text-muted">Belum punya akun? <a href="register.html" style="color:var(--g700);font-weight:700">Daftar sekarang</a></div>
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);text-align:center;line-height:1.8">
+        <strong>Demo (simulasi):</strong><br>
+        Admin: admin@agrimarket.id<br>
+        Petani: budi@petani.id<br>
+        Konsumen: sari@konsumen.id<br>
+        Password: <strong>password</strong>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="footer"></div>
+<script src="../js/app.js"></script>
+<script src="../js/components.js"></script>
+<script>
+  initComponents('../');
+  function doLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const pass  = document.getElementById('password').value;
+    const valid = [
+      { email:'admin@agrimarket.id',  pass:'password', redirect:'dashboard-admin.html' },
+      { email:'budi@petani.id',       pass:'password', redirect:'dashboard-petani.html' },
+      { email:'sari@konsumen.id',     pass:'password', redirect:'../index.html' },
+    ];
+    const user = valid.find(u => u.email === email && u.pass === pass);
+    if (user) {
+      localStorage.setItem('agrimarket_user', JSON.stringify({ email, role: user.redirect.includes('admin')?'admin':user.redirect.includes('petani')?'petani':'konsumen' }));
+      showToast('Login berhasil! Mengarahkan...');
+      setTimeout(() => window.location.href = user.redirect, 1200);
+    } else {
+      showToast('Email atau password salah! (gunakan akun demo)');
+    }
+  }
+</script>
+</body>
+</html>
